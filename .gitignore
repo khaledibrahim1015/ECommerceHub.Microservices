@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/ECommerceHub/.vs/ECommerceHub/v17
+/ECommerceHub/.vs/ECommerceHub/FileContentIndex
+/ECommerceHub/Services/Catalog/Catalog.Api/obj
+/ECommerceHub/Services/Catalog/Catalog.Application/obj
+/ECommerceHub/Services/Catalog/Catalog.Core/obj
+/ECommerceHub/Services/Catalog/Catalog.Infrastructure/obj
