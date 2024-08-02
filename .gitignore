@@ -8,3 +8,8 @@
 /ECommerceHub/Services/Catalog/Catalog.Application/obj
 /ECommerceHub/Services/Catalog/Catalog.Core/obj
 /ECommerceHub/Services/Catalog/Catalog.Infrastructure/obj
+/ECommerceHub/.vs/ECommerceHub/DesignTimeBuild
+/ECommerceHub/Services/Catalog/Catalog.Api/bin/Debug/net6.0
+/ECommerceHub/Services/Catalog/Catalog.Application/bin/Debug/net6.0
+/ECommerceHub/Services/Catalog/Catalog.Core/bin/Debug/net6.0
+/ECommerceHub/Services/Catalog/Catalog.Infrastructure/bin/Debug/net6.0
