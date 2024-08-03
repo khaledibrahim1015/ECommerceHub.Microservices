@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ public static class GenericContextSeed
 {
     public static void SeedData<T>(IMongoCollection<T> collection) where T : class
     {
-        bool checkExist =  collection.Find(_ => true) != null;
+        bool checkExist =  collection.Find(_ => true).Any();
         // Determine the file name based on the type of T
         var fileToRead = typeof(T) == typeof(Product)
             ? "products.json"
@@ -23,21 +24,33 @@ public static class GenericContextSeed
                     ? "types.json"
                     : null));
 
-        // Optionally, you could add a check for an empty file name and handle the case where T does not match any known type
+
+
         if (string.IsNullOrEmpty(fileToRead))
         {
             throw new InvalidOperationException($"Unsupported type: {typeof(T).Name}");
         }
+        string fullpath = Path.Combine("C:\\Users\\ZALL-TECH\\Desktop\\EShopping\\ECommerceHub.Microservices\\ECommerceHub\\Services\\Catalog\\"
+                        , Assembly.GetExecutingAssembly().GetName().Name
+                        , "Data", "SeedData", fileToRead
+            );
 
-        string path = Path.Combine("Data", "SeedData", fileToRead);
-
-        if(!checkExist)
+        if (!checkExist)
         {
-            string data = File.ReadAllText(path);
-            IEnumerable<T>? DataSerilized =  JsonSerializer.Deserialize<IEnumerable<T>>(data);
-            if (DataSerilized!.Any() && DataSerilized != null)
-                foreach (var item in DataSerilized)
-                    collection.InsertOneAsync(item);
+            try
+            {
+                string data = File.ReadAllText(fullpath);
+                IEnumerable<T>? DataSerilized = JsonSerializer.Deserialize<IEnumerable<T>>(data);
+                if (DataSerilized!.Any() && DataSerilized != null)
+                    foreach (var item in DataSerilized)
+                        collection.InsertOneAsync(item);
+            }
+            catch (Exception ex )
+            {
+
+                Console.WriteLine(ex.Message );
+            }
+        
         }
 
 
@@ -45,6 +58,9 @@ public static class GenericContextSeed
 
 
     }
+
+
+ 
 
 
 

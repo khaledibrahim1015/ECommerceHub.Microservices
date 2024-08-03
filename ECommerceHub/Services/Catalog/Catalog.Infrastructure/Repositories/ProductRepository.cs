@@ -13,11 +13,15 @@ namespace Catalog.Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task<IEnumerable<Product>> GetProducts() => 
-            await _context
+        public async Task<IEnumerable<Product>> GetProducts()
+        {
+            var res  = await _context
                     .Prodcuts
                       .Find(_ => true)
                         .ToListAsync();
+            return res;
+        } 
+            
    
 
         public async Task<Product> GetProduct(string id)
