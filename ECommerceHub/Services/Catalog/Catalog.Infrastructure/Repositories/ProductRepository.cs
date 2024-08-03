@@ -2,11 +2,6 @@
 using Catalog.Core.Repositories;
 using Catalog.Infrastructure.Data;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Catalog.Infrastructure.Repositories
 {
@@ -60,7 +55,7 @@ namespace Catalog.Infrastructure.Repositories
             FilterDefinition<Product> filter = Builders<Product>
                                                         .Filter.Eq( p=> p.Id , product.Id);
             var updatedResult = await _context.Prodcuts
-                                            .ReplaceOneAsync(filter, product, new ReplaceOptions { IsUpsert = true });
+                                              .ReplaceOneAsync(filter, product, new ReplaceOptions { IsUpsert = true });
             return updatedResult.IsAcknowledged && updatedResult.ModifiedCount > 0;
         }
         public async Task<bool> DeleteProduct(string id)
