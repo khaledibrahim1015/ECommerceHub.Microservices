@@ -1,4 +1,12 @@
-﻿namespace Catalog.Api
+﻿
+
+using Catalog.Api.Factory;
+using Catalog.Application.Handlers;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
+
+namespace Catalog.Api
 {
     public class Startup
     {
@@ -10,8 +18,10 @@
             // Add services to the container.
 
             services.AddControllers();
-            services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
+
+            // Adding All Required Services 
+            services.AddRequiredServices(Configuration);
+
 
 
         }
