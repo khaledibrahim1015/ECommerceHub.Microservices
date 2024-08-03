@@ -2,6 +2,7 @@
 
 using Catalog.Api.Factory;
 using Catalog.Application.Handlers;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
@@ -51,19 +52,21 @@ namespace Catalog.Api
                 endpoints.MapHealthChecks("/health",
                    new HealthCheckOptions
                    {
-                       ResponseWriter = async (context, report) =>
-                       {   
-                           var result = JsonSerializer.Serialize(
-                               new
-                               {
-                                   status = report.Status.ToString(),
-                                   errors = report.Entries.Select(e => new { key = e.Key, value = Enum.GetName(typeof(HealthStatus), e.Value.Status) })
-                               });
+                       Predicate = _ => true,
+                       ResponseWriter =  UIResponseWriter.WriteHealthCheckUIResponse,
+                       //ResponseWriter = async (context, report) =>
+                       //{   
+                       //    var result = JsonSerializer.Serialize(
+                       //        new
+                       //        {
+                       //            status = report.Status.ToString(),
+                       //            errors = report.Entries.Select(e => new { key = e.Key, value = Enum.GetName(typeof(HealthStatus), e.Value.Status) })
+                       //        });
 
-                           context.Response.ContentType = MediaTypeNames.Application.Json;
+                       //    context.Response.ContentType = MediaTypeNames.Application.Json;
 
-                           await context.Response.WriteAsync(result);
-                       }
+                       //    await context.Response.WriteAsync(result);
+                       //}
                    });
             });
 
