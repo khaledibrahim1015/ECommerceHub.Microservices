@@ -18,8 +18,8 @@ public class CatalogContext : ICatalogContext
     public IMongoCollection<ProductType> Types { get; }
     public CatalogContext(IConfiguration configuration)
     {
-        var client = new MongoClient(configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
-        var db = client.GetDatabase(configuration.GetValue<string>("DatabaseSettings:DatabaseName"));
+        IMongoClient client = new MongoClient(configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
+        IMongoDatabase db = client.GetDatabase(configuration.GetValue<string>("DatabaseSettings:DatabaseName"));
 
         Prodcuts = db.GetCollection<Product>
                                     (configuration.GetValue<string>("DatabaseSettings:ProdcutCollection"));
