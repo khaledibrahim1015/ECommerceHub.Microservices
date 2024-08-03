@@ -3,6 +3,7 @@
 using Catalog.Api.Factory;
 using Catalog.Application.Handlers;
 using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
@@ -14,8 +15,13 @@ namespace Catalog.Api
 {
     public class Startup
     {
+
         public IConfiguration Configuration;
 
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
 
         public void ConfigureServices(IServiceCollection services)
         {
