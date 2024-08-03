@@ -28,7 +28,7 @@ namespace Catalog.Api.Controllers
         }
 
         [HttpGet]
-        [Route("[action/{productName}",Name = "GetProdcutByProductName")]
+        [Route("[action]/{productName}",Name = "GetProdcutByProductName")]
         [ProducesResponseType(typeof(List<ProductResponse>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<IList<ProductResponse>>> GetProdcutByProductName([FromRoute]string productName)
         {
