@@ -13,6 +13,10 @@ namespace Catalog.Api
             Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webHostBuilder =>
             {
                 webHostBuilder.UseStartup<Startup>();
+            }).ConfigureAppConfiguration((hostingContext, configBuilder) =>
+            {
+                configBuilder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                configBuilder.AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true);
             });
         
     }
