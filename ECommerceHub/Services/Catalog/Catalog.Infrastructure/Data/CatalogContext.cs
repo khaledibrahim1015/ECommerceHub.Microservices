@@ -29,10 +29,6 @@ public class CatalogContext : ICatalogContext
         Types = db.GetCollection<ProductType>
                                     (configuration.GetValue<string>("DatabaseSettings:TypesCollection"));
 
-        //  Seeding Data 
-        GenericContextSeed.SeedData(Prodcuts);
-        GenericContextSeed.SeedData(Brands);
-        GenericContextSeed.SeedData(Types);
     }
 
 
