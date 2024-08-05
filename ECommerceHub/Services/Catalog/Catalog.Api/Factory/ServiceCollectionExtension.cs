@@ -13,6 +13,8 @@ using System.Reflection;
 using static System.Net.Mime.MediaTypeNames;
 using System.Reflection.PortableExecutable;
 using System.Xml.Linq;
+using MongoDB.Driver;
+using Microsoft.AspNetCore.Mvc.Versioning;
 
 namespace Catalog.Api.Factory
 {
@@ -47,20 +49,26 @@ namespace Catalog.Api.Factory
                 options.DefaultApiVersion = new ApiVersion(1, 0);
                 options.AssumeDefaultVersionWhenUnspecified = true;
                 options.ReportApiVersions = true;
+                options.ApiVersionReader = ApiVersionReader.Combine(
+                    new UrlSegmentApiVersionReader(),
+                    new HeaderApiVersionReader("api-version"),
+                    new QueryStringApiVersionReader("api-version")
+                    );
+            }).AddVersionedApiExplorer(opt =>
+            {
+                opt.GroupNameFormat = "'v'VVV";
+                opt.SubstituteApiVersionInUrl = true;
+
             });
 
-            services.AddVersionedApiExplorer(options =>
-            {
-                options.GroupNameFormat = "'v'VVV";
-                options.SubstituteApiVersionInUrl = true;
-            });
+     
 
             //adding health check services to container
             //adding MongoDb Health Check
             services.AddHealthChecks()
-                         .AddMongoDb(
-                        mongodbConnectionString: configuration.GetValue<string>("DatabaseSettings:ConnectionString"),
-                        name: "Catalog MongoDb Health Check", failureStatus: HealthStatus.Degraded);
+                           .AddMongoDb(
+                            mongodbConnectionString: configuration.GetValue<string>("DatabaseSettings:ConnectionString"),
+                            name: "Catalog MongoDb Health Check", failureStatus: HealthStatus.Degraded);
 
             services.AddSwaggerGen(cw =>
             {
