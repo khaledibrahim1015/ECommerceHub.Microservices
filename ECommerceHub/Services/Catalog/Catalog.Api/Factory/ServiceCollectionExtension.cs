@@ -86,7 +86,7 @@ namespace Catalog.Api.Factory
             
             services.AddAutoMapper(typeof(CreateProductHandler).GetTypeInfo().Assembly);
 
-            services.AddScoped<ICatalogContext , CatalogContext>();
+            services.AddScoped<ICatalogContext>(sp => new CatalogContext(sp.GetRequiredService<IConfiguration>()));
             services.AddScoped<IProductRepostitory, ProductRepository>();
             services.AddScoped<IBrandRepository, ProductRepository>();
             services.AddScoped<ITypeRepository, ProductRepository>();

@@ -19,15 +19,19 @@ public class CatalogContext : ICatalogContext
     public CatalogContext(IConfiguration configuration)
     {
         var x = configuration.GetValue<string>("DatabaseSettings:DatabaseName");
-        IMongoClient client = new MongoClient(configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
-        IMongoDatabase db = client.GetDatabase(configuration.GetValue<string>("DatabaseSettings:DatabaseName"));
+        IMongoClient client = new MongoClient(configuration["DatabaseSettings:ConnectionString"]);
+        IMongoDatabase db = client.GetDatabase(configuration["DatabaseSettings:DatabaseName"]);
 
         Prodcuts = db.GetCollection<Product>
-                                    (configuration.GetValue<string>("DatabaseSettings:ProdcutCollection"));
+                                    (configuration["DatabaseSettings:ProdcutCollection"]);
         Brands = db.GetCollection<ProductBrand>
-                                    (configuration.GetValue<string>("DatabaseSettings:BrandsCollection"));
+                                    (configuration["DatabaseSettings:BrandsCollection"]);
         Types = db.GetCollection<ProductType>
-                                    (configuration.GetValue<string>("DatabaseSettings:TypesCollection"));
+                                    (configuration["DatabaseSettings:TypesCollection"]);
+        GenericContextSeed.SeedData<Product>(Prodcuts);
+        GenericContextSeed.SeedData<ProductBrand>(Brands);
+        GenericContextSeed.SeedData<ProductType>(Types);
+
 
     }
 

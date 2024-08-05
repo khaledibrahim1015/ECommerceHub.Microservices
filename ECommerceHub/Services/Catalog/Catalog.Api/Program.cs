@@ -6,13 +6,12 @@ namespace Catalog.Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public async static Task Main(string[] args)
         {
            var host =  CreateHostBuilder(args).Build();//.Run();
 
             using IServiceScope? scope =  host.Services.CreateScope();
             IServiceProvider services  =  scope.ServiceProvider;
-            ICatalogContext context   =  services.GetRequiredService<ICatalogContext>();
             IHostEnvironment env  =  services.GetRequiredService<IHostEnvironment>();
             ILogger<Program> logger = services.GetRequiredService<ILogger<Program>>();
 
@@ -20,10 +19,7 @@ namespace Catalog.Api
             {
                 if(env.IsDevelopment() || env.IsStaging())
                 {
-                    // seed data 
-                    GenericContextSeed.SeedData(context.Prodcuts);
-                    GenericContextSeed.SeedData(context.Brands);
-                    GenericContextSeed.SeedData(context.Types);
+                    ICatalogContext context = services.GetRequiredService<ICatalogContext>();
                     logger.LogInformation("Finished seeding the database.");
                 }
             }
@@ -33,7 +29,7 @@ namespace Catalog.Api
                 throw;
             }
 
-            host.RunAsync();
+          await  host.RunAsync();
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>

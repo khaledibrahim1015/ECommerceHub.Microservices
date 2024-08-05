@@ -15,3 +15,5 @@
 /ECommerceHub/Services/Catalog/Catalog.Infrastructure/bin/Debug/net6.0
 /ECommerceHub/.vs/ECommerceHub/config
 /ECommerceHub/obj/Docker
+/ECommerceHub/bin/Debug
+/ECommerceHub/obj/Debug
