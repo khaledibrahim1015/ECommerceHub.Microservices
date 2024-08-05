@@ -1,0 +1,89 @@
+# will split docker-compose in two files Configuration docker-compse.yml and docker-compose.override.yml
+
+version: '3.4'
+networks:
+  dev:
+    driver: bridge
+services:
+  catalogdb:
+    image: mongo
+  
+  catalog.api:
+    image: ${DOCKER_REGISTRY-}catalogapi
+    build:
+      context: .
+      dockerfile: Services/Catalog/Catalog.Api/Dockerfile
+
+volumes:
+  mongo_data:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Commented !!!! 
+# version: '3.4'
+
+# networks:
+#   dev:
+#     driver: bridge
+
+# services:   
+#   catalog.api:
+#     image: ${DOCKER_REGISTRY-}catalogapi
+#     container_name: catalog.api
+#     build:
+#       context: .
+#       dockerfile: Services/Catalog/Catalog.Api/Dockerfile # Specifies the location of the Dockerfile relative to the build context
+#     depends_on: 
+#       - catalogdb  # Ensures that the catalogdb service is started before catalog.api
+#     environment:
+#       - ASPNETCORE_ENVIRONMENT=Development   We set ASPNETCORE_ENVIRONMENT=Deploy. This will make your application look for appsettings.Deploy.json file.
+#       - DatabaseSettings__ConnectionString=mongodb://catalogdb:27017 #  connection string to be injected in appsettings when docker compose run =>  use the service name catalogdb instead of 127.0.0.1 because Docker Compose sets up internal DNS resolution between services.
+#     ports:
+#       - "9000:80"
+#       - "9001:443"
+#     networks:
+#       - dev
+
+#   catalogdb:
+#     image: mongo # Pulls the official MongoDB image from Docker Hub
+#     container_name: catalogdb 
+#     restart: always
+#     networks:
+#       - dev
+#     volumes:
+#       - app_data:/data/db # Corrected volume mapping for MongoDB
+#     # This line creates a mapping between two locations
+#     #/ data/db is inside the container. This is where MongoDB writes its data files by default
+#     # app_data is managed by Docker on host machine it exist in var/lib/docker/volumes
+
+# volumes:
+#   app_data: # Defines a named volume for persistent data storage
