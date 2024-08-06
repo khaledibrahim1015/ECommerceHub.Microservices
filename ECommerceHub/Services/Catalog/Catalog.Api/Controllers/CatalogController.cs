@@ -1,6 +1,7 @@
 ﻿using Catalog.Application.Commands;
 using Catalog.Application.Queries;
 using Catalog.Application.Responses;
+using Catalog.Core.Specifications;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -49,10 +50,10 @@ namespace Catalog.Api.Controllers
 
         [HttpGet]
         [Route("GetAllProducts")]
-        [ProducesResponseType(typeof(IList<ProductResponse>),(int) HttpStatusCode.OK)]
-        public async Task<ActionResult<IList<ProductResponse>>> GetAllProducts()
+        [ProducesResponseType(typeof(Pagination<ProductResponse>),(int) HttpStatusCode.OK)]
+        public async Task<ActionResult<Pagination<ProductResponse>>> GetAllProducts([FromQuery] CatalogSpecsParams catalogSpecsParams)
         {
-            var query  = new GetAllProdcutsQuery();
+            var query  = new GetAllProdcutsQuery(catalogSpecsParams);
             var result = await  _mediator.Send(query);
             return Ok(result);
         }

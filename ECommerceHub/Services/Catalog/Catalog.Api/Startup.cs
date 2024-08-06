@@ -1,15 +1,8 @@
 ﻿
 
 using Catalog.Api.Factory;
-using Catalog.Application.Handlers;
 using HealthChecks.UI.Client;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.OpenApi.Models;
-using System.Net.Mime;
-using System.Reflection;
-using System.Text.Json;
 
 namespace Catalog.Api
 {

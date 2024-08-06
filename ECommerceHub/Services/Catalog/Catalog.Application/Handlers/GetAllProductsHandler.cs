@@ -3,6 +3,7 @@ using Catalog.Application.Queries;
 using Catalog.Application.Responses;
 using Catalog.Core.Entities;
 using Catalog.Core.Repositories;
+using Catalog.Core.Specifications;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Catalog.Application.Handlers
 {
-    public class GetAllProductsHandler : IRequestHandler<GetAllProdcutsQuery, IList<ProductResponse>>
+    public class GetAllProductsHandler : IRequestHandler<GetAllProdcutsQuery, Pagination<ProductResponse>>
     {
         private readonly IProductRepostitory _productRepostitory;
 
@@ -21,11 +22,11 @@ namespace Catalog.Application.Handlers
             _productRepostitory = productRepostitory;
         }
 
-        public async Task<IList<ProductResponse>> Handle(GetAllProdcutsQuery request, CancellationToken cancellationToken)
+        public async Task<Pagination<ProductResponse>> Handle(GetAllProdcutsQuery request, CancellationToken cancellationToken)
         {
-            IEnumerable<Product> productList =await _productRepostitory.GetProducts();
+            Pagination<Product> paginatedProductList =await _productRepostitory.GetProductPaginationAsync(request._catalogSpecsParams);
 
-            List<ProductResponse> productResponseList = MapperExtension.Mapper.Map<List<ProductResponse>>(productList);
+            Pagination<ProductResponse> productResponseList = MapperExtension.Mapper.Map<Pagination<ProductResponse>>(paginatedProductList);
             return productResponseList;
         }
     }

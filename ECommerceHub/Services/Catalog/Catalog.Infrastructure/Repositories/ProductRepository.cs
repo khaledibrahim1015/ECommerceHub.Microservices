@@ -1,6 +1,9 @@
-﻿using Catalog.Core.Entities;
+﻿using Catalog.Core.Consts;
+using Catalog.Core.Entities;
 using Catalog.Core.Repositories;
+using Catalog.Core.Specifications;
 using Catalog.Infrastructure.Data;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Catalog.Infrastructure.Repositories
@@ -13,6 +16,55 @@ namespace Catalog.Infrastructure.Repositories
         {
             _context = context;
         }
+        public async Task<Pagination<Product>> GetProductPaginationAsync(CatalogSpecsParams catalogSpecsParams)
+        {
+            var products =await _context.Prodcuts
+                                        .Find(GetFilterDefination(catalogSpecsParams))
+                                        .Sort(GetSortedDefination(catalogSpecsParams.Sort))
+                                        .Skip(catalogSpecsParams.PageSize * (catalogSpecsParams.PageIndex - 1))
+                                        .Limit(catalogSpecsParams.PageSize)
+                                        .ToListAsync();
+
+
+            return new Pagination<Product>()
+            {
+                PageIndex = catalogSpecsParams.PageIndex,
+                PageSize = catalogSpecsParams.PageSize,
+                Count = await _context.Prodcuts.CountDocumentsAsync(_ => true),
+                Data = products
+            };
+        }
+
+        private FilterDefinition<Product> GetFilterDefination (CatalogSpecsParams catalogSpecsParams)
+        {
+            FilterDefinitionBuilder<Product> builder = Builders<Product>.Filter;
+            FilterDefinition<Product> filter = builder.Empty;
+
+            // like operation 
+            if(!string.IsNullOrEmpty(catalogSpecsParams.Search))
+                filter &= builder.Regex(prd => prd.Name , new BsonRegularExpression(catalogSpecsParams.Search));
+
+            if (!string.IsNullOrEmpty(catalogSpecsParams.BrandId))
+                filter &= builder.Eq(prd => prd.Brands.Id, catalogSpecsParams.BrandId);
+
+            if(!string.IsNullOrEmpty(catalogSpecsParams.TypeId))
+                filter &= builder.Eq(prd => prd.Types.Id , catalogSpecsParams.TypeId);
+
+            return filter;
+
+        }
+        private SortDefinition<Product> GetSortedDefination(string sort)
+        {
+            return sort.ToLower() switch
+            {
+                OrderBy.OrderByPriceAsc => Builders<Product>.Sort.Ascending(prd => prd.Price),
+                OrderBy.OrderByPriceDesc => Builders<Product>.Sort.Descending(prd=> prd.Price),
+                _ => Builders<Product>.Sort.Ascending(p => p.Name)
+            } ;
+
+        }
+
+
         public async Task<IEnumerable<Product>> GetProducts()
         {
             var res  = await _context
