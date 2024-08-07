@@ -1,7 +1,11 @@
-﻿using Basket.Core.interfaces;
+﻿using Basket.Application.Queries;
+using Basket.Core.interfaces;
 using Basket.Infrastructure.Configuration;
 using Basket.Infrastructure.Helper;
+using Basket.Infrastructure.Repositories;
 using Basket.Infrastructure.Services;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Basket.Api.Extensions
 {
@@ -14,12 +18,20 @@ namespace Basket.Api.Extensions
             services.Configure<RedisConfiguration>(configuration.GetSection("RedisConfiguration"));
 
 
+            // Register Packages 
+            services.AddMediatR(medCfg =>
+            {
+                medCfg.RegisterServicesFromAssemblies(typeof(GetBasketByUserNameQuery).Assembly);
+            });
+
+            services.AddAutoMapper(typeof(GetBasketByUserNameQuery).GetTypeInfo().Assembly);    
+           
 
 
             // Register Services 
 
             services.AddScoped<ICacheService , CacheService>();
-
+            services.AddScoped<IBasketRepository, BasketRepository>();
 
 
 
