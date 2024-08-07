@@ -11,7 +11,7 @@ namespace Basket.Infrastructure.Helper;
         {
             _lazyConnection = new Lazy<ConnectionMultiplexer>(() =>
             {
-                return ConnectionMultiplexer.Connect(AppSettings.RedisUrl);
+                return ConnectionMultiplexer.Connect(AppSettings.ConnectionString);
             });
         }
 

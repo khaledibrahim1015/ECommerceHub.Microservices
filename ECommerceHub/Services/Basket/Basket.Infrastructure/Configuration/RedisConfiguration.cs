@@ -8,6 +8,6 @@ namespace Basket.Infrastructure.Configuration
 {
     public  class RedisConfiguration
     {
-        public string RedisUrl { get; set; }
+        public string ConnectionString { get; set; }
     }
 }
