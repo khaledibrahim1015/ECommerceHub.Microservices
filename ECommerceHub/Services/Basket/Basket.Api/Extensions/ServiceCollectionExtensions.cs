@@ -1,6 +1,7 @@
-﻿using Basket.Infrastructure.Configuration;
+﻿using Basket.Core.interfaces;
+using Basket.Infrastructure.Configuration;
 using Basket.Infrastructure.Helper;
-using Microsoft.Extensions.Configuration;
+using Basket.Infrastructure.Services;
 
 namespace Basket.Api.Extensions
 {
@@ -9,14 +10,15 @@ namespace Basket.Api.Extensions
 
         public static IServiceCollection AddRequiredServices(this IServiceCollection services , IConfiguration configuration)
         {
-            ///  Register RedisConfiguration 
+            ///  Configure  RedisConfiguration settings  
             services.Configure<RedisConfiguration>(configuration.GetSection("RedisConfiguration"));
-            // Configure Redis settings
-            services.AddSingleton<AppSettings>();
-            // Register ConnectionHelper
-            services.AddSingleton<ConnectionHelper>();
 
 
+
+
+            // Register Services 
+
+            services.AddScoped<ICacheService , CacheService>();
 
 
 

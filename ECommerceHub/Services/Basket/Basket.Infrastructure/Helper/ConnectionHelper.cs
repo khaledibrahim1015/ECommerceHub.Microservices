@@ -3,21 +3,19 @@ using StackExchange.Redis;
 
 namespace Basket.Infrastructure.Helper;
 
-
-
     public class ConnectionHelper
     {
-        private readonly Lazy<ConnectionMultiplexer> _lazyConnection;
+        private static readonly Lazy<ConnectionMultiplexer> _lazyConnection;
 
-        public ConnectionHelper(AppSettings appSettings)
+        static ConnectionHelper()
         {
             _lazyConnection = new Lazy<ConnectionMultiplexer>(() =>
             {
-                return ConnectionMultiplexer.Connect(appSettings.RedisUrl);
+                return ConnectionMultiplexer.Connect(AppSettings.RedisUrl);
             });
         }
 
-        public ConnectionMultiplexer Connection => _lazyConnection.Value;
+        public static  ConnectionMultiplexer Connection => _lazyConnection.Value;
 
     }
 
