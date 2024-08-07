@@ -17,3 +17,11 @@
 /ECommerceHub/obj/Docker
 /ECommerceHub/bin/Debug
 /ECommerceHub/obj/Debug
+/ECommerceHub/Services/Basket/Basket.Api/bin/Debug/net6.0
+/ECommerceHub/Services/Basket/Basket.Api/obj
+/ECommerceHub/Services/Basket/Basket.Application/bin/Debug/net6.0
+/ECommerceHub/Services/Basket/Basket.Application/obj
+/ECommerceHub/Services/Basket/Basket.Core/bin/Debug/net6.0
+/ECommerceHub/Services/Basket/Basket.Core/obj
+/ECommerceHub/Services/Basket/Basket.Infrastructure/bin/Debug/net6.0
+/ECommerceHub/Services/Basket/Basket.Infrastructure/obj
