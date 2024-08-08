@@ -9,7 +9,17 @@ services:
      - mongo_data:/data/db
     networks:
      - dev
-  
+
+  basketdb:
+    container_name: basketdb
+    restart: always
+    ports:
+     - "6379:6379"
+    volumes:
+     - redis_data :/data/db
+    networks:
+     - dev
+
   catalog.api:
     container_name: catalog.api
     environment:      # speciify environment to inject in appsettings 
@@ -23,6 +33,19 @@ services:
      - catalogdb
     ports:
      - "9000:80"
-     - "9001:443"
+     # - "9001:443"
     networks:
      - dev
+
+
+  basket.api:
+   container_name: basket.api
+   environment:
+    - ASPNETCORE_ENVIRONMENT= Development
+    - "Redis__ConnectionString=basketdb:6379"
+   depends_on:
+    - basketdb
+   ports:
+    - "9001:80"
+   networks:
+   - dev  
