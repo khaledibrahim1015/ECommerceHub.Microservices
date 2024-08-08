@@ -3,7 +3,7 @@
 namespace Basket.Api.Controllers;
 
 [ApiVersion("1")]
-[Route("api/v{version:apiVersion}/[contrller]")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
 public class ApiController :ControllerBase
 {

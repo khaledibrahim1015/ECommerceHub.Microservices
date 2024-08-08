@@ -8,7 +8,7 @@ using System.Net;
 
 namespace Basket.Api.Controllers;
 
-public class BasketController:ApiController
+public class BasketController: ApiController
 {
     private readonly IMediator _mediator;
 
@@ -34,7 +34,7 @@ public class BasketController:ApiController
         ( [FromBody] CreateShoppingCartCommand createShoppingCartCommand )
     {
 
-        var basket=  _mediator.Send(createShoppingCartCommand);
+        var basket=  await _mediator.Send(createShoppingCartCommand);
         return Ok(basket);
 
     }
