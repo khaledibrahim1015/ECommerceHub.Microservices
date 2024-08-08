@@ -25,3 +25,11 @@
 /ECommerceHub/Services/Basket/Basket.Core/obj
 /ECommerceHub/Services/Basket/Basket.Infrastructure/bin/Debug/net6.0
 /ECommerceHub/Services/Basket/Basket.Infrastructure/obj
+/ECommerceHub/Services/Discount/Discount.Api/bin/Debug/net6.0
+/ECommerceHub/Services/Discount/Discount.Api/obj
+/ECommerceHub/Services/Discount/Discount.Application/bin/Debug/net6.0
+/ECommerceHub/Services/Discount/Discount.Application/obj
+/ECommerceHub/Services/Discount/Discount.Core/bin/Debug/net6.0
+/ECommerceHub/Services/Discount/Discount.Core/obj
+/ECommerceHub/Services/Discount/Discount.Infrastructure/bin/Debug/net6.0
+/ECommerceHub/Services/Discount/Discount.Infrastructure/obj
