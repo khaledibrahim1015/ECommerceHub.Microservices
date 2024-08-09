@@ -1,5 +1,4 @@
-﻿using Discount.Infrastructure.Configuration.CustomAttributes;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Npgsql;
 using System.Data.Common;
 using System.Reflection;

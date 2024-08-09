@@ -33,3 +33,5 @@
 /ECommerceHub/Services/Discount/Discount.Core/obj
 /ECommerceHub/Services/Discount/Discount.Infrastructure/bin/Debug/net6.0
 /ECommerceHub/Services/Discount/Discount.Infrastructure/obj
+/ECommerceHub/Services/Discount/Discount.Shared/bin/Debug/net6.0
+/ECommerceHub/Services/Discount/Discount.Shared/obj

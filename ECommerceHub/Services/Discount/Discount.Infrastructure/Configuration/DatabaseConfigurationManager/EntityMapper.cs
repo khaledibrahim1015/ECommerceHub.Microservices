@@ -1,5 +1,4 @@
-﻿using Discount.Infrastructure.Configuration.CustomAttributes;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Discount.Infrastructure.Configuration.DatabaseConfigurationManager;
 
@@ -19,7 +18,11 @@ public  class EntityMapper
         PrimaryKey = Properties.FirstOrDefault(propInfo => propInfo.GetCustomAttribute<PrimaryKeyAttribute>() != null);
         ColumnsMappings = Properties.ToDictionary(
                          keySelector: prop => prop,
-                         prop => prop.GetCustomAttribute<ColumnNameAttribute>().Name ?? prop.Name
+                        prop =>
+                           {
+                              var columnAttribute = prop.GetCustomAttribute<ColumnNameAttribute>();
+                              return columnAttribute?.Name ?? prop.Name;
+                           }
                         );
     }
 

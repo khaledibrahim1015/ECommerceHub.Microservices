@@ -2,7 +2,6 @@
 using Discount.Core.Entities;
 using Discount.Core.Repositories;
 using Discount.Infrastructure.Configuration.DatabaseConfigurationManager;
-using System.ComponentModel;
 using System.Data.Common;
 
 namespace Discount.Infrastructure.Repositories;
@@ -20,7 +19,7 @@ public class DiscountRepostiory : IDiscountRepository
 
     public async Task<Coupon> GetDiscount(string productName)
     {
-       using DbConnection connection = await GetDbConnectionAsync();
+        using DbConnection connection = await GetDbConnectionAsync();
         Coupon? coupon = await connection.QueryFirstOrDefaultAsync<Coupon>(
                         $@"SELECT * FROM {typeof(Coupon).Name} WHERE ProductName=@ProductName",
                         new { ProductName = productName }
@@ -62,7 +61,7 @@ public class DiscountRepostiory : IDiscountRepository
     }
     public async Task<bool> DeleteDiscount(string productName)
     {
-        DbConnection connection = await GetDbConnectionAsync();
+        using DbConnection connection = await GetDbConnectionAsync();
         var affected = await connection.ExecuteAsync($@"DELETE FROM {typeof(Coupon).Name} WHERE ProductName = @ProductName",
                 new { ProductName = productName });
 
