@@ -15,4 +15,13 @@ public class Coupon
     [ColumnName("Amount")]
     public int Amount { get; set; }
 
+    public Coupon() {  }
+
+    public Coupon(int id, string productName, string description, int amount)
+    {
+        Id = id;
+        ProductName = productName;
+        Description = description;
+        Amount = amount;
+    }
 }
