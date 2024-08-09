@@ -32,6 +32,8 @@ public class DataBaseMigrationService : IHostedService
 
     private async Task MigrateDatabaseAsync(CancellationToken cancellationToken)
     {
+        _logger.LogInformation("Discount Db Migration started");
+
         foreach (var entityType in _entityTypes)
         {
 
@@ -50,7 +52,7 @@ public class DataBaseMigrationService : IHostedService
 
 
         }
-
+        _logger.LogInformation("Discount Db Migration Completed");
 
 
 
