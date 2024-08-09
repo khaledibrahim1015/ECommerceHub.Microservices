@@ -1,4 +1,6 @@
-﻿using Discount.Core.Entities;
+﻿using Discount.Application.Interfaces;
+using Discount.Application.Queries;
+using Discount.Core.Entities;
 using Discount.Core.Repositories;
 using Discount.Infrastructure.Configuration;
 using Discount.Infrastructure.Configuration.DatabaseConfigurationManager;
@@ -26,7 +28,37 @@ namespace Discount.Api.Extensions
 
             services.AddHostedService<DataBaseMigrationService>();
 
+
             services.AddScoped<IDiscountRepository, DiscountRepostiory>();
+
+
+            // api registers 
+            services.AddMappers();
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(GetDiscountQuery).Assembly));
+            services.AddGrpc();
+
+
+
+            return services;
+        }
+
+        public static IServiceCollection AddMappers(this IServiceCollection services)
+        {
+            var mapperTypes = typeof(IMapper).Assembly.GetTypes()
+                .Where(t => t.IsClass && !t.IsAbstract && t.GetInterfaces()
+                    .Any(i => i.IsGenericType &&
+                        (i.GetGenericTypeDefinition() == typeof(ICommandMapper<,>) ||
+                         i.GetGenericTypeDefinition() == typeof(IQueryMapper<,>))));
+
+            foreach (var mapperType in mapperTypes)
+            {
+                var interfaceType = mapperType.GetInterfaces()
+                    .First(i => i.IsGenericType &&
+                        (i.GetGenericTypeDefinition() == typeof(ICommandMapper<,>) ||
+                         i.GetGenericTypeDefinition() == typeof(IQueryMapper<,>)));
+
+                services.AddScoped(interfaceType, mapperType);
+            }
 
             return services;
         }
