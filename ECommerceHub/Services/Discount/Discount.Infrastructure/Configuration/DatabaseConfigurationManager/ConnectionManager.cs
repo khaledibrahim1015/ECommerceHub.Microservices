@@ -6,7 +6,7 @@ namespace Discount.Infrastructure.Configuration.DatabaseConfigurationManager
 {
     public class ConnectionManager
     {
-        private readonly string _connectionString;
+        public  readonly string _connectionString;
 
         public ConnectionManager(AppSettings appSettings)
         {

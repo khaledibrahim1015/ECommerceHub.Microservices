@@ -15,6 +15,7 @@ namespace Discount.Api.Extensions
         {
             // configure Postgresql configuration 
             services.Configure<PostgresqlConfiguration>(configuration.GetSection("DatabaseSettings"));
+            services.AddHostedService<DataBaseMigrationService>();
 
             // Register services in DI container 
             services.AddSingleton<AppSettings>();
@@ -26,7 +27,6 @@ namespace Discount.Api.Extensions
                 typeof(Coupon),
             });
 
-            services.AddHostedService<DataBaseMigrationService>();
 
 
             services.AddScoped<IDiscountRepository, DiscountRepostiory>();

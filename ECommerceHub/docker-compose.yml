@@ -1,15 +1,22 @@
 # will split docker-compose in two files Configuration docker-compse.yml and docker-compose.override.yml
 
 version: '3.4'
-networks:
-  dev:
-    driver: bridge
+
+
 services:
   catalogdb:
     image: mongo
-  
+
   basketdb:
-   image: redis:alpine
+    image: redis:alpine
+
+  discountdb:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: DiscountDb
+
 
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalogapi
@@ -17,21 +24,35 @@ services:
       context: .
       dockerfile: Services/Catalog/Catalog.Api/Dockerfile
 
+
   basket.api:
-   image: ${DOCKER_REGISTRY-}basketapi  
-   build:
-     context: .
-     dockerfile: Services/Basket/Basket.Api/Dockerfile
+    image: ${DOCKER_REGISTRY-}basketapi
+    build:
+      context: .
+      dockerfile: Services/Basket/Basket.Api/Dockerfile
+
+
+  discount.api:
+    image: ${DOCKER_REGISTRY-}discountapi
+    build:
+      context: .
+      dockerfile: Services/Discount/Discount.Api/Dockerfile
+
 
   portainer:
-    image: portainer/portainer-ce:latest  
+    image: portainer/portainer-ce:latest
+
+
+  pgadmin:
+    image: dpage/pgadmin4
+
 
 volumes:
   mongo_data:
-  redis_data:  
-  portainer_data:  
-
-
+  redis_data:
+  portainer_data:
+  postgres_data:
+  pgadmin_data:
 
 
 

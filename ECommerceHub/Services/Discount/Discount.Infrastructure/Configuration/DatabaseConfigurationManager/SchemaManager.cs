@@ -19,19 +19,22 @@ public class SchemaManager
 
     public async Task CreateSchemaAsync(Type entityType)
     {
-        EntityMapper mapper = new EntityMapper(entityType);
+        try
+        {
+           await EnsureDatabaseAsync();
 
-        var columns = mapper.Properties.Select(
-            propInfo => $"{mapper.ColumnsMappings[propInfo]} {GetPostgreSqlType(propInfo)} {GetConstraints(propInfo)}"
-        );
+            // Now proceed with creating the schema in our database
+            EntityMapper mapper = new EntityMapper(entityType);
 
-        string createTableSql = $@"
+            var columns = mapper.Properties.Select(
+                propInfo => $"{mapper.ColumnsMappings[propInfo]} {GetPostgreSqlType(propInfo)} {GetConstraints(propInfo)}"
+            );
+
+            string createTableSql = $@"
             CREATE TABLE IF NOT EXISTS {mapper.TableName} (
                 {string.Join(",\n", columns)}
             )";
 
-        try
-        {
             using var connection = await _connectionManager.GetConnectionAsync() as NpgsqlConnection;
             using var command = connection.CreateCommand();
             command.CommandText = $"DROP TABLE IF EXISTS {mapper.TableName}";
@@ -53,6 +56,35 @@ public class SchemaManager
         {
             _logger.LogError(ex, $"Error creating schema for {entityType.Name}");
             throw;
+        }
+    }
+
+    public async Task EnsureDatabaseAsync()
+    {
+        //  connect to the default 'postgres' database to create our database
+        var builder = new NpgsqlConnectionStringBuilder(_connectionManager._connectionString);
+        var databaseName = builder.Database;
+        builder.Database = "postgres";
+
+        using (var conn = new NpgsqlConnection(builder.ToString()))
+        {
+            await conn.OpenAsync();
+
+            // Check if our database exists
+            using (var cmd = new NpgsqlCommand($"SELECT 1 FROM pg_database WHERE datname = '{databaseName}'", conn))
+            {
+                var result = await cmd.ExecuteScalarAsync();
+                if (result == null)
+                {
+                    // Database doesn't exist, so create it
+                    using (var createDbCmd = new NpgsqlCommand($"CREATE DATABASE \"{databaseName}\"", conn))
+                    {
+                        await createDbCmd.ExecuteNonQueryAsync();
+                        _logger.LogInformation("Discount Db Migration Completed");
+
+                    }
+                }
+            }
         }
     }
 
