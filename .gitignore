@@ -35,3 +35,8 @@
 /ECommerceHub/Services/Discount/Discount.Infrastructure/obj
 /ECommerceHub/Services/Discount/Discount.Shared/bin/Debug/net6.0
 /ECommerceHub/Services/Discount/Discount.Shared/obj
+/ECommerceHub/Services/Ordering/Ordering.Api/bin/Debug/net6.0
+/ECommerceHub/Services/Ordering/Ordering.Api/obj
+/ECommerceHub/Services/Ordering/Ordering.Application/obj
+/ECommerceHub/Services/Ordering/Ordering.Core/obj
+/ECommerceHub/Services/Ordering/Ordering.Infrastructure/obj
