@@ -1,4 +1,5 @@
 ﻿using Basket.Application.Commands;
+using Basket.Application.DiscountService;
 using Basket.Application.Mappers;
 using Basket.Application.Responses;
 using Basket.Core.Entities;
@@ -10,15 +11,26 @@ namespace Basket.Application.Handlers;
 public class CreateShoppingCartHandler : IRequestHandler<CreateShoppingCartCommand, ShoppingCartResponse>
 {
     private readonly IBasketRepository _basketRepository;
-
-    public CreateShoppingCartHandler(IBasketRepository basketRepository)
+    private readonly DiscountGrpcService _discountGrpcService;
+    public CreateShoppingCartHandler(IBasketRepository basketRepository, DiscountGrpcService discountGrpcService)
     {
         _basketRepository = basketRepository;
+        _discountGrpcService = discountGrpcService;
     }
 
     public async Task<ShoppingCartResponse> Handle(CreateShoppingCartCommand request, CancellationToken cancellationToken)
     {
-        // Todo: apply DiscountService 
+        // Consuming DiscountGrpcService To Get CouponByProductName
+        request.Items.ForEach(async item =>
+        {
+            var coupon = await _discountGrpcService.GetDiscount(item.ProductName);
+            if (coupon != null)
+            {
+                item.Price -= coupon.Amount;
+            }
+        });
+
+
 
         ShoppingCart shoppingCart = await _basketRepository.UpdateBasket(new ShoppingCart()
         {

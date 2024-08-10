@@ -1,4 +1,5 @@
 ﻿using Basket.Application.Commands;
+using Basket.Application.DiscountService;
 using Basket.Application.Queries;
 using Basket.Application.Responses;
 using Basket.Core.Entities;
@@ -11,6 +12,7 @@ namespace Basket.Api.Controllers;
 public class BasketController: ApiController
 {
     private readonly IMediator _mediator;
+    
 
     public BasketController(IMediator mediator)
     {

@@ -17,8 +17,6 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data/db
-    networks:
-      - ecommercehub_dev
 
   discountdb:
     container_name: discountdb
@@ -48,13 +46,13 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "Redis__ConnectionString=basketdb:6379"
+      - "GrpcSettings__DiscountUrl:http://discount.api"
       - "ASPNETCORE_URLS=http://+:80"
     depends_on:
       - basketdb
     ports:
       - "9001:80"
-    networks:
-      - ecommercehub_dev
+
 
   discount.api:
     container_name: discount.api
@@ -65,8 +63,7 @@ services:
       - discountdb
     ports:
       - "9002:80"
-    networks:
-      - ecommercehub_dev
+
 
   portainer:
     container_name: portainer
