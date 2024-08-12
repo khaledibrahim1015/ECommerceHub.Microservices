@@ -22,6 +22,10 @@ namespace Ordering.Api
           => Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder =>
           {
               webBuilder.UseStartup<Startup>();
+          }).ConfigureAppConfiguration((hostBuilderContext, configurationBuiler) =>
+          {
+              configurationBuiler.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+              configurationBuiler.AddJsonFile($"appsettings.{hostBuilderContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true);
           });
 
 
