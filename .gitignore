@@ -40,3 +40,6 @@
 /ECommerceHub/Services/Ordering/Ordering.Application/obj
 /ECommerceHub/Services/Ordering/Ordering.Core/obj
 /ECommerceHub/Services/Ordering/Ordering.Infrastructure/obj
+/ECommerceHub/Services/Ordering/Ordering.Application/bin/Debug/net6.0
+/ECommerceHub/Services/Ordering/Ordering.Core/bin/Debug/net6.0
+/ECommerceHub/Services/Ordering/Ordering.Infrastructure/bin/Debug/net6.0
