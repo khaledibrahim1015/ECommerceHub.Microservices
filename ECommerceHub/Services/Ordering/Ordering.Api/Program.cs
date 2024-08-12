@@ -1,35 +1,35 @@
+using Ordering.Api.Extensions;
+using Ordering.Infrastructure.Data;
+
 namespace Ordering.Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
-
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
 
 
-            app.MapControllers();
+            var host = await CreateHostBulder(args).Build()
+                        .MigrateDatabase<OrderDbContext>();// Ensure migrations are applied
 
-            app.Run();
+            host.SeedDatabase<OrderDbContext>(ExecuteDatabaseSeedAsync);
+
+            await host.RunAsync();
+
         }
+
+        private static IHostBuilder CreateHostBulder(string[] args)
+          => Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder =>
+          {
+              webBuilder.UseStartup<Startup>();
+          });
+
+
+        private static async Task ExecuteDatabaseSeedAsync(OrderDbContext context, IServiceProvider service)
+        {
+            var logger = service.GetRequiredService<ILogger<OrderDbContextSeed>>();
+            await OrderDbContextSeed.SeedAsync(context, logger);
+        }
+
     }
 }

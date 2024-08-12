@@ -4,7 +4,7 @@ namespace Ordering.Api.Extensions
 {
     public static class ApplicationBuilderExtensions
     {
-        public static IApplicationBuilder AddGlobalExceptionHanding(this IApplicationBuilder app)
+        public static IApplicationBuilder UseGlobalExceptionHanding(this IApplicationBuilder app)
         {
             app.UseMiddleware<GlobalExceptionHandling>();
             return app;
