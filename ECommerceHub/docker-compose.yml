@@ -17,6 +17,9 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: DiscountDb
 
+  orderdb:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+
 
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalogapi
@@ -38,6 +41,12 @@ services:
       context: .
       dockerfile: Services/Discount/Discount.Api/Dockerfile
 
+  
+  ordering.api:
+    image: ${DOCKER_REGISTRY-}orderingapi
+    build:
+      context: .
+      dockerfile: Services/Ordering/Ordering.Api/Dockerfile
 
   portainer:
     image: portainer/portainer-ce:latest
