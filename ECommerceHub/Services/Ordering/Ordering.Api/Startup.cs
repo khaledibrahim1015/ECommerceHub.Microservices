@@ -13,11 +13,7 @@ namespace Ordering.Api
             var host = await CreateHostBulder(args).Build()
                         .MigrateDatabase<OrderDbContext>();// Ensure migrations are applied
 
-             host.SeedDatabase<OrderDbContext>( async  (context, services) =>
-                {
-                    var logger = services.GetRequiredService<ILogger<OrderDbContextSeed>>();
-                    await OrderDbContextSeed.SeedAsync(context, logger);
-                });
+            host.SeedDatabase<OrderDbContext>(ExecuteDatabaseSeedAsync);
 
           await  host.RunAsync();
 
@@ -28,5 +24,13 @@ namespace Ordering.Api
           {
               webBuilder.UseStartup<Startup>();
           });
+
+
+        private  static async Task ExecuteDatabaseSeedAsync(OrderDbContext context , IServiceProvider service)
+        {
+            var logger = service.GetRequiredService<ILogger<OrderDbContextSeed>>();
+          await  OrderDbContextSeed.SeedAsync(context , logger);
+        }
+
     }
 }

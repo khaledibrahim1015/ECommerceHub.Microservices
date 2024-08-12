@@ -2,29 +2,28 @@
 using Microsoft.EntityFrameworkCore;
 using Polly;
 using Polly.Retry;
-using System;
 namespace Ordering.Api.Extensions;
 
-public static class HostExtension
+public static class HostExtensions
 {
-    public static async Task<IHost> MigrateDatabase<TContext>(this IHost host ) 
+    public static async Task<IHost> MigrateDatabase<TContext>(this IHost host)
         where TContext : DbContext
     {
-        using IServiceScope scope =  host.Services.CreateScope();
+        using IServiceScope scope = host.Services.CreateScope();
         IServiceProvider services = scope.ServiceProvider;
         var logger = services.GetRequiredService<ILogger<TContext>>();
-        var context =  services.GetRequiredService<TContext>();
+        var context = services.GetRequiredService<TContext>();
 
         try
         {
             logger.LogInformation($"Starting database migration for context {typeof(TContext).Name}");
 
             var retryPolicy = CreateRetryPolicy(logger);
-           await retryPolicy.Execute(async () => context.Database.Migrate());
+            await retryPolicy.Execute(async () => context.Database.Migrate());
             logger.LogInformation($"Database migration completed for context {typeof(TContext).Name}");
 
         }
-        catch (Exception ex  )
+        catch (Exception ex)
         {
             logger.LogError(ex, $"An error occurred while migrating the database for context {typeof(TContext).Name}");
             throw;  // Re-throw the exception to avoid silent failures.
@@ -33,12 +32,12 @@ public static class HostExtension
         return host;
     }
 
-    public static  IHost SeedDatabase<TContext>(this IHost host , Func<TContext , IServiceProvider , Task> seeder) 
+    public static IHost SeedDatabase<TContext>(this IHost host, Func<TContext, IServiceProvider, Task> seeder)
         where TContext : DbContext
     {
-        using var scope =  host.Services.CreateScope();
+        using var scope = host.Services.CreateScope();
         var services = scope.ServiceProvider;
-        var context =  services.GetRequiredService<TContext>();
+        var context = services.GetRequiredService<TContext>();
         var logger = services.GetRequiredService<ILogger<TContext>>();
 
         try
@@ -46,7 +45,7 @@ public static class HostExtension
             logger.LogInformation($"Starting database seeding for context {typeof(TContext).Name}");
             var retryPolicy = CreateRetryPolicy(logger);
 
-            retryPolicy.Execute( () => seeder.Invoke(context, services));
+            retryPolicy.Execute(() => seeder.Invoke(context, services));
             logger.LogInformation($"Database seeding completed for context {typeof(TContext).Name}");
         }
         catch (Exception ex)
@@ -55,7 +54,7 @@ public static class HostExtension
             logger.LogError(ex, $"An error occurred while seeding the database for context {typeof(TContext).Name}");
             throw;
         }
-         
+
 
 
         return host;
