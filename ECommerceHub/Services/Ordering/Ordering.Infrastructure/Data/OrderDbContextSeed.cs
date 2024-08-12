@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Ordering.Core.Entities;
 
 namespace Ordering.Infrastructure.Data;
@@ -8,16 +9,24 @@ public class OrderDbContextSeed
 
     public static async Task SeedAsync(OrderDbContext orderContext, ILogger<OrderDbContextSeed> logger)
     {
-        if (!orderContext.Orders.Any())
+        try
         {
-            logger.LogInformation("Seeding initial data for Orders...");
-            await orderContext.Orders.AddRangeAsync(GetPreconfiguredOrders());
-            await orderContext.SaveChangesAsync();
-            logger.LogInformation("Seeding initial data completed.");
+            if (!await orderContext.Orders.AnyAsync())
+            {
+                logger.LogInformation("Seeding initial data for Orders...");
+                await orderContext.Orders.AddRangeAsync(GetPreconfiguredOrders());
+                await orderContext.SaveChangesAsync();
+                logger.LogInformation("Seeding initial data completed.");
+            }
+            else
+            {
+                logger.LogInformation("Database already contains data. Seeding skipped.");
+            }
         }
-        else
+        catch (Exception ex)
         {
-            logger.LogInformation("Database already contains data. Seeding skipped.");
+            logger.LogError(ex, "An error occurred while seeding the database.");
+            throw;
         }
     }
 

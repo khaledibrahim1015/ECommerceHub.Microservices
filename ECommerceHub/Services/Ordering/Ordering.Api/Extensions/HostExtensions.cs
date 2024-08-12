@@ -19,7 +19,21 @@ public static class HostExtensions
             logger.LogInformation($"Starting database migration for context {typeof(TContext).Name}");
 
             var retryPolicy = CreateRetryPolicy(logger);
-            await retryPolicy.Execute(async () => context.Database.Migrate());
+            await retryPolicy.Execute(async () =>
+            {
+
+                // Create database if it doesn't exist
+                var isExist = await context.Database.EnsureCreatedAsync();
+                if (isExist)
+                    logger.LogInformation($"{isExist}  Database is created ");
+                else
+                    logger.LogInformation($"{isExist} Database already exist ");
+                // Apply migrations
+                await context.Database.MigrateAsync();
+
+
+            }
+         );
             logger.LogInformation($"Database migration completed for context {typeof(TContext).Name}");
 
         }
@@ -45,7 +59,7 @@ public static class HostExtensions
             logger.LogInformation($"Starting database seeding for context {typeof(TContext).Name}");
             var retryPolicy = CreateRetryPolicy(logger);
 
-            retryPolicy.Execute(() => seeder.Invoke(context, services));
+            retryPolicy.Execute(() => seeder.Invoke(context, services).GetAwaiter().GetResult());
             logger.LogInformation($"Database seeding completed for context {typeof(TContext).Name}");
         }
         catch (Exception ex)

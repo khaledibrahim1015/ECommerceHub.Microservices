@@ -4,11 +4,11 @@ using Ordering.Infrastructure.Configuration;
 
 namespace Ordering.Infrastructure.Data;
 
-public  class OrderDbContextOptionFactory
+public class OrderDbContextOptionFactory
 {
     public AppSettings AppSettings { get; set; }
     public string ConnectionString => AppSettings.ConnectionString;
-    public OrderDbContextOptionFactory( IOptions<AppSettings> options)
+    public OrderDbContextOptionFactory(IOptions<AppSettings> options)
     {
         AppSettings = options.Value;
     }
