@@ -2,12 +2,7 @@
 using Ordering.Core.Entities;
 using Ordering.Core.interfaces;
 using Ordering.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ordering.Infrastructure.Repositories
 {
@@ -21,11 +16,11 @@ namespace Ordering.Infrastructure.Repositories
         }
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {
-          return  await _dbContext.Set<T>().ToListAsync();
+            return await _dbContext.Set<T>().ToListAsync();
         }
         public async Task<IReadOnlyList<T>> GetAllAsync(Expression<Func<T, bool>> predicate)
         {
-           return await _dbContext.Set<T>().Where(predicate).ToListAsync();
+            return await _dbContext.Set<T>().Where(predicate).ToListAsync();
         }
         public async Task<T> GetByIdAsync(int id)
         {
@@ -40,8 +35,14 @@ namespace Ordering.Infrastructure.Repositories
         }
         public async Task UpdateAsync(T entity)
         {
-            _dbContext.Entry(entity).State =  EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
+            // Ensure the entity is being tracked
+            var existingEntity = await _dbContext.Set<T>().FindAsync(entity.Id);
+            if (existingEntity != null)
+            {
+                // Update the existing entity's properties with the values from the detached entity
+                _dbContext.Entry(existingEntity).CurrentValues.SetValues(entity);
+                await _dbContext.SaveChangesAsync();
+            }
         }
         public async Task DeleteAsync(T entity)
         {
@@ -49,11 +50,11 @@ namespace Ordering.Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        
 
-       
 
-       
-     
+
+
+
+
     }
 }

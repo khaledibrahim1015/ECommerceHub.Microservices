@@ -3,18 +3,18 @@ using Ordering.Core.Entities;
 
 namespace Ordering.Infrastructure.Data;
 
-public  class OrderDbContext :DbContext
+public class OrderDbContext : DbContext
 {
     public OrderDbContext(DbContextOptions<OrderDbContext> options) : base(options)
     {
-        
+
     }
 
     public DbSet<Order> Orders { get; set; }
 
- 
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken =default)
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         foreach (var entry in ChangeTracker.Entries<BaseEntity>())
         {

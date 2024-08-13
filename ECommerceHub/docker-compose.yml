@@ -18,7 +18,7 @@ services:
       POSTGRES_DB: DiscountDb
 
   orderdb:
-    image: mcr.microsoft.com/mssql/server:2017-latest
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
 
 
   catalog.api:

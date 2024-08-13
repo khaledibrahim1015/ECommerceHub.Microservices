@@ -29,7 +29,15 @@ public static class HostExtensions
                 else
                     logger.LogInformation($"{isExist} Database already exist ");
                 // Apply migrations
-                await context.Database.MigrateAsync();
+                if (context.Database.GetPendingMigrations().Any())
+                {
+                    logger.LogInformation("Applying pending migrations...");
+                    await context.Database.MigrateAsync();
+                }
+                else
+                {
+                    logger.LogInformation("No pending migrations.");
+                }
 
 
             }

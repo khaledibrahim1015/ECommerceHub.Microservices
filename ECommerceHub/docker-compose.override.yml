@@ -27,12 +27,12 @@ services:
 
   orderdb:
     container_name: orderdb
-    environment:
-      SA_PASSWORD: "Khaled1234"
-      ACCEPT_EULA: "Y"
     restart: always
+    environment:
+      - ACCEPT_EULA=y
+      - SA_PASSWORD=A&VeryComplex123Password
     ports:
-      - "1433:1433"  
+      - "9100:1433"  
 
   catalog.api:
     container_name: catalog.api
@@ -77,11 +77,11 @@ services:
     container_name: ordering.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "DatabaseSettings__ConnectionString=Server=orderdb;Database=OrderDb;User Id=sa;Password=Khaled1234;"
+      - DB_CONNECTION_STRING=Server=orderdb;Database=OrderDb;User Id=SA;Password=A&VeryComplex123Password;MultipleActiveResultSets=true
     depends_on:
-      - discountdb
+      - orderdb
     ports:
-      - "9002:80"
+      - "9003:80"
 
   portainer:
     container_name: portainer

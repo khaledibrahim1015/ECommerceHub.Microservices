@@ -7,7 +7,6 @@ namespace Ordering.Infrastructure.Data;
 public class OrderDbContextOptionFactory
 {
     public AppSettings AppSettings { get; set; }
-    public string ConnectionString => AppSettings.ConnectionString;
     public OrderDbContextOptionFactory(IOptions<AppSettings> options)
     {
         AppSettings = options.Value;
@@ -15,8 +14,9 @@ public class OrderDbContextOptionFactory
 
     public DbContextOptions<OrderDbContext> CreateOrderDbContextOptions()
     {
+        var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ?? AppSettings.ConnectionString;
         DbContextOptionsBuilder<OrderDbContext> optionBuilder = new DbContextOptionsBuilder<OrderDbContext>();
-        optionBuilder.UseSqlServer(ConnectionString);
+        optionBuilder.UseSqlServer(connectionString);
         return optionBuilder.Options;
 
     }
