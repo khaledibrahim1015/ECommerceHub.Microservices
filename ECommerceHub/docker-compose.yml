@@ -48,6 +48,14 @@ services:
       context: .
       dockerfile: Services/Ordering/Ordering.Api/Dockerfile
 
+  ocelotapigw:
+    image:  ${DOCKER_REGISTRY-}ocelotapigw
+    build:
+      context: .
+      dockerfile: ApiGateways/Ocelot.Api/Dockerfile
+    
+
+
   portainer:
     image: portainer/portainer-ce:latest
 

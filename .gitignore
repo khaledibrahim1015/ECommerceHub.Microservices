@@ -46,3 +46,5 @@
 /ECommerceHub/Infrastructure/EventBus.Messages/obj/Debug/net6.0
 /ECommerceHub/Infrastructure/EventBus.Messages/obj
 /ECommerceHub/Infrastructure/EventBus.Messages/bin/Debug/net6.0
+/ECommerceHub/ApiGateways/Ocelot.Api/bin/Debug/net6.0
+/ECommerceHub/ApiGateways/Ocelot.Api/obj
