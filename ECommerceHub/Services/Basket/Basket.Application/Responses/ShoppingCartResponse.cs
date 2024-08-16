@@ -6,25 +6,25 @@ public class ShoppingCartResponse
 
     public List<ShoppingCartItemResponse> Items { get; set; } = new List<ShoppingCartItemResponse>();
 
-    public ShoppingCartResponse() {}
+    public ShoppingCartResponse() { }
 
     public ShoppingCartResponse(string userName)
     {
-        UserName = userName;   
+        UserName = userName;
     }
 
 
-    public decimal TotalPrice 
+    public decimal TotalPrice
     {
         get
         {
-            decimal totalPrice  = 0;
-            Items.ForEach(x =>
+            decimal totalPrice = 0;
+            foreach (var item in Items)
             {
-                totalPrice += x.Price * x.Quantity;
-            });
-            return totalPrice;
+                totalPrice += item.Price * item.Quantity;
+            }
 
+            return totalPrice;
         }
     }
 

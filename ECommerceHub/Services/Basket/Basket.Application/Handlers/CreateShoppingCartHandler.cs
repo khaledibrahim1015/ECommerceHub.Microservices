@@ -21,16 +21,15 @@ public class CreateShoppingCartHandler : IRequestHandler<CreateShoppingCartComma
     public async Task<ShoppingCartResponse> Handle(CreateShoppingCartCommand request, CancellationToken cancellationToken)
     {
         // Consuming DiscountGrpcService To Get CouponByProductName
-        request.Items.ForEach(async item =>
+        //  issue here happen because async foreach vs sync items.Forech
+        foreach (var item in request.Items)
         {
             var coupon = await _discountGrpcService.GetDiscount(item.ProductName);
             if (coupon != null)
             {
                 item.Price -= coupon.Amount;
             }
-        });
-
-
+        }
 
         ShoppingCart shoppingCart = await _basketRepository.UpdateBasket(new ShoppingCart()
         {
