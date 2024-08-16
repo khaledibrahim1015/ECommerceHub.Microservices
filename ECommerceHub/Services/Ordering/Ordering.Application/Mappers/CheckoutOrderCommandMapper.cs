@@ -1,15 +1,36 @@
-﻿using Ordering.Application.Commands;
+﻿using EventBus.Messages.Events;
+using Ordering.Application.Commands;
 using Ordering.Application.Interfaces;
 using Ordering.Core.Entities;
-using System.Diagnostics.Metrics;
-using System.Net.Mail;
-using System.Reflection.Emit;
-using System.Windows.Input;
 
 namespace Ordering.Application.Mappers;
 
 public class CheckoutOrderCommandMapper : IMapper, ICommandMapper<CheckoutOrderCommand, Order>
+                                            , IEventCommandMapper<BasketCheckoutEvent, CheckoutOrderCommand>
 {
+    public CheckoutOrderCommand MapToCommand(BasketCheckoutEvent @event)
+    {
+        return new CheckoutOrderCommand()
+        {
+            UserName = @event.UserName,
+            TotalPrice = @event.TotalPrice,
+            FirstName = @event.FirstName,
+            LastName = @event.LastName,
+            EmailAddress = @event.EmailAddress,
+            AddressLine = @event.AddressLine,
+            Country = @event.Country,
+            State = @event.State,
+            ZipCode = @event.ZipCode,
+            CardName = @event.CardName,
+            CardNumber = @event.CardNumber,
+            Expiration = @event.Expiration,
+            Cvv = @event.Cvv,
+            PaymentMethod = @event.PaymentMethod
+
+
+
+        };
+    }
 
     public Order MapToEntity(CheckoutOrderCommand command)
     {

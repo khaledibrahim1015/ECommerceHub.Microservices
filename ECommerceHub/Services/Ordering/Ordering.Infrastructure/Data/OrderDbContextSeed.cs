@@ -37,9 +37,9 @@ public class OrderDbContextSeed
             new Order()
             {
                 UserName = "khaled",
-                FirstName = "ibraa",
-                LastName = "Sahay",
-                EmailAddress = "khaledIbra@eshop.net",
+                FirstName = "khaled",
+                LastName = "ibrahim",
+                EmailAddress = "khaledIbrahim@eshop.net",
                 AddressLine = "23st.",
                 Country = "egypt",
                 TotalPrice = 750,

@@ -24,27 +24,36 @@ namespace Ordering.Api.Extensions
             return services;
         }
 
+
         public static IServiceCollection AddMappers(this IServiceCollection services)
         {
-            var mapperTypes = typeof(IMapper).Assembly.GetTypes()
-                .Where(t => t.IsClass && !t.IsAbstract && t.GetInterfaces()
-                    .Any(i => i.IsGenericType &&
-                        (i.GetGenericTypeDefinition() == typeof(ICommandMapper<,>) ||
-                         i.GetGenericTypeDefinition() == typeof(IQueryMapper<,>))));
+            var assembly = typeof(IMapper).Assembly;
+            var mapperInterfaces = new[]
+            {
+                typeof(ICommandMapper<,>),
+                typeof(IQueryMapper<,>),
+                typeof(IEventCommandMapper<,>)
+            };
+
+            var mapperTypes = assembly.GetTypes()
+                .Where(t => t.IsClass && !t.IsAbstract &&
+                            t.GetInterfaces().Any(i => i.IsGenericType &&
+                                mapperInterfaces.Contains(i.GetGenericTypeDefinition())));
 
             foreach (var mapperType in mapperTypes)
             {
-                var interfaceType = mapperType.GetInterfaces()
-                    .First(i => i.IsGenericType &&
-                        (i.GetGenericTypeDefinition() == typeof(ICommandMapper<,>) ||
-                         i.GetGenericTypeDefinition() == typeof(IQueryMapper<,>)));
+                var interfaces = mapperType.GetInterfaces()
+                    .Where(i => i.IsGenericType &&
+                                mapperInterfaces.Contains(i.GetGenericTypeDefinition()));
 
-                services.AddScoped(interfaceType, mapperType);
+                foreach (var interfaceType in interfaces)
+                {
+                    services.AddScoped(interfaceType, mapperType);
+                }
             }
 
             return services;
         }
-
 
 
     }
