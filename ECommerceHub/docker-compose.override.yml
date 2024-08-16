@@ -53,11 +53,16 @@ services:
     container_name: basket.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - EventBusSettings=amqp://KHALED:KHALEDPASS@rabbitmq:5672
+      - "EventBusSettings__HostAddress:amqp://KHALED:KHALEDPASS@rabbitmq:5672"
+      - "EventBusSettings__UserName:KHALED"
+      - "EventBusSettings__Password:KHALEDPASS"
       - "Redis__ConnectionString=basketdb:6379"
       - "GrpcSettings__DiscountUrl:http://discount.api"
       - "ASPNETCORE_URLS=http://+:80"
     depends_on:
       - basketdb
+      - rabbitmq
     ports:
       - "9001:80"
 
@@ -78,8 +83,13 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - DB_CONNECTION_STRING=Server=orderdb;Database=OrderDb;User Id=SA;Password=A&VeryComplex123Password;MultipleActiveResultSets=true
+      - EventBusSettings=amqp://KHALED:KHALEDPASS@rabbitmq:5672
+      - "EventBusSettings__HostAddress:amqp://KHALED:KHALEDPASS@rabbitmq:5672"
+      - "EventBusSettings__UserName:KHALED"
+      - "EventBusSettings__Password:KHALEDPASS"
     depends_on:
       - orderdb
+      - rabbitmq
     ports:
       - "9003:80"
 
@@ -105,6 +115,18 @@ services:
     volumes:
       - pgadmin_data:/root/.pgadmin
 
+  rabbitmq:
+    container_name: 'rabbitmq'
+    ports:
+        - 5672:5672 #FOR RABBITMQ SERVER 
+        - 15672:15672 #FOR UI MANAGEMENT 
+    environment:
+      - RABBITMQ_DEFAULT_USER=KHALED
+      - RABBITMQ_DEFAULT_PASS=KHALEDPASS
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+ 
 
 volumes:
   mongo_data:
@@ -112,3 +134,4 @@ volumes:
   portainer_data:
   postgres_data:
   pgadmin_data:
+  rabbitmq_data:
