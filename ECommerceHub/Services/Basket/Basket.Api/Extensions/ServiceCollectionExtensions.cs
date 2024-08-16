@@ -115,7 +115,7 @@ namespace Basket.Api.Extensions
             {
                 config.UsingRabbitMq((ct, cfg) =>
                 {
-                    var rabbitMqHostAddress = Environment.GetEnvironmentVariable("HostAddress") ?? configuration.GetValue<string>("EventBusSettings:HostAddress");
+                    var rabbitMqHostAddress = Environment.GetEnvironmentVariable("EventBusSettings") ?? configuration.GetValue<string>("EventBusSettings:HostAddress");
                     cfg.Host(rabbitMqHostAddress);
                 });
             });

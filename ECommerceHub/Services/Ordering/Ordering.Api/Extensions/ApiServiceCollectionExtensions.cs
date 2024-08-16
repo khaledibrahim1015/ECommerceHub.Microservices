@@ -88,7 +88,7 @@ namespace Ordering.Api.Extensions
                 config.AddConsumer<BasketOrderingConsumer>();
                 config.UsingRabbitMq((ctx, cfg) =>
                 {
-                    var rabbitMqHostAddress = Environment.GetEnvironmentVariable("HostAddress") ?? configuration.GetValue<string>("EventBusSettings:HostAddress");
+                    var rabbitMqHostAddress = Environment.GetEnvironmentVariable("EventBusSettings") ?? configuration.GetValue<string>("EventBusSettings:HostAddress");
                     cfg.Host(rabbitMqHostAddress);
                     //provide the queue name with consumer settings
                     cfg.ReceiveEndpoint(EventBusConstant.BasketCheckoutQueue, c =>
