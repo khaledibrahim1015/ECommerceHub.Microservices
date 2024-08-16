@@ -43,3 +43,6 @@
 /ECommerceHub/Services/Ordering/Ordering.Application/bin/Debug/net6.0
 /ECommerceHub/Services/Ordering/Ordering.Core/bin/Debug/net6.0
 /ECommerceHub/Services/Ordering/Ordering.Infrastructure/bin/Debug/net6.0
+/ECommerceHub/Infrastructure/EventBus.Messages/obj/Debug/net6.0
+/ECommerceHub/Infrastructure/EventBus.Messages/obj
+/ECommerceHub/Infrastructure/EventBus.Messages/bin/Debug/net6.0
