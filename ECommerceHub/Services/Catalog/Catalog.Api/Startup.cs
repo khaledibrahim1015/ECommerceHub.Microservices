@@ -29,7 +29,7 @@ namespace Catalog.Api
             services.AddRequiredServices(Configuration);
 
 
-            //  Add global authorization policies using the DefaultPolicy  == [Authorize]
+            // Add global authorization policies using the DefaultPolicy  == [Authorize]
             var userPolicy = new AuthorizationPolicyBuilder()
                         .RequireAuthenticatedUser()
                         .Build();
@@ -41,13 +41,14 @@ namespace Catalog.Api
 
 
 
-            // Add Authentication and Authorization 
+            // Add Authentication and Authorization
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-                {
-                    options.Audience = "https://localhost:9009";  // identityserver 
-                    options.Audience = "Catalog";
-                });
+                    .AddJwtBearer(options =>
+                    {
+                        //  validate jwtbearer token 
+                        options.Authority = "https://localhost:9009";
+                        options.Audience = "Catalog";
+                    });
 
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

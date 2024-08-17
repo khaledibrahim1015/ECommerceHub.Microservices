@@ -7,62 +7,46 @@ using System.Collections.Generic;
 
 namespace ECcommerceHub.Identity
 {
+
     public static class Config
     {
         public static IEnumerable<IdentityResource> IdentityResources =>
             new IdentityResource[]
             {
-                new IdentityResources.OpenId(),  // return subjectid 
-                new IdentityResources.Profile(), //  return username firstname etc
+            new IdentityResources.OpenId(),  // return subjectid 
+            new IdentityResources.Profile(), //  return username firstname etc
             };
-
         //  api scope authenticaion level read or write or readandwrite 
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
             {
-                new ApiScope("scope1"),
-                new ApiScope("scope2"),
+            new ApiScope("catalogapi")
             };
-
         //  List of Microservices can go here 
         public static IEnumerable<ApiResource> ApiResources =>
             new ApiResource[]
             {
+                // audience 
+            new ApiResource(name:"Catalog", displayName: "Catalog.API")
+            {
+                Scopes= new []{ "catalogapi" }
+            }
 
             };
-
-
 
         public static IEnumerable<Client> Clients =>
             new Client[]
             {
-                // m2m client credentials flow client (machine to machine client)
-                new Client
-                {
-                    ClientId = "m2m.client",
-                    ClientName = "Client Credentials Client",
+            // MACHINE TO MACHINE FLOW 
+            new Client()
+            {
+                ClientName ="Catalog Api Client ",
+                ClientId= "CatalogApiClient",
+                ClientSecrets={new Secret("7f053372-2504-496f-a7b7-b04c3972bd92".Sha256()) },
+                AllowedGrantTypes= GrantTypes.ClientCredentials,
+                AllowedScopes={ "catalogapi" }
+            }
 
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    ClientSecrets = { new Secret("511536EF-F270-4058-80CA-1C89C192F69A".Sha256()) },
-
-                    AllowedScopes = { "scope1" }
-                },
-
-                //(like angular) interactive client using code flow + pkce
-                new Client
-                {
-                    ClientId = "interactive",
-                    ClientSecrets = { new Secret("49C1A7E1-0C79-4A89-A3D6-A37998FB86B0".Sha256()) },
-
-                    AllowedGrantTypes = GrantTypes.Code,
-
-                    RedirectUris = { "https://localhost:44300/signin-oidc" },
-                    FrontChannelLogoutUri = "https://localhost:44300/signout-oidc",
-                    PostLogoutRedirectUris = { "https://localhost:44300/signout-callback-oidc" },
-
-                    AllowOfflineAccess = true,
-                    AllowedScopes = { "openid", "profile", "scope2" }
-                },
             };
     }
 }
