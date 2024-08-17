@@ -49,3 +49,4 @@
 /ECommerceHub/ApiGateways/Ocelot.Api/bin/Debug/net6.0
 /ECommerceHub/ApiGateways/Ocelot.Api/obj
 /ECommerceHub/Infrastructure/ECcommerceHub.Identity/obj
+/ECommerceHub/Infrastructure/ECcommerceHub.Identity

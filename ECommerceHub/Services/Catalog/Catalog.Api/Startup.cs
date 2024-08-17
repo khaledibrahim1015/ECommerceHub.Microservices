@@ -2,7 +2,10 @@
 
 using Catalog.Api.Factory;
 using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace Catalog.Api
 {
@@ -20,12 +23,31 @@ namespace Catalog.Api
         {
             // Add services to the container.
 
-            services.AddControllers();
+            //services.AddControllers();
 
             // Adding All Required Services 
             services.AddRequiredServices(Configuration);
 
 
+            //  Add global authorization policies using the DefaultPolicy  == [Authorize]
+            var userPolicy = new AuthorizationPolicyBuilder()
+                        .RequireAuthenticatedUser()
+                        .Build();
+
+            services.AddControllers(cfg =>
+            {
+                cfg.Filters.Add(new AuthorizeFilter(userPolicy));
+            });
+
+
+
+            // Add Authentication and Authorization 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+                {
+                    options.Audience = "https://localhost:9009";  // identityserver 
+                    options.Audience = "Catalog";
+                });
 
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -40,9 +62,10 @@ namespace Catalog.Api
                     sw.SwaggerEndpoint(url: "/swagger/v1/swagger.json", name: "Catalog.Api v1");
                 });
             }
+            app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -52,7 +75,7 @@ namespace Catalog.Api
                    new HealthCheckOptions
                    {
                        Predicate = _ => true,
-                       ResponseWriter =  UIResponseWriter.WriteHealthCheckUIResponse,
+                       ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse,
                        //ResponseWriter = async (context, report) =>
                        //{   
                        //    var result = JsonSerializer.Serialize(
