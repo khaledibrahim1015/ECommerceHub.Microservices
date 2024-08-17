@@ -55,7 +55,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus.Messages", "Infras
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateways", "ApiGateways", "{D8293F1C-3BC2-4CC9-A3D6-0CA3A4680B73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ocelot.Api", "ApiGateways\Ocelot.Api\Ocelot.Api.csproj", "{EBF3F80D-D5FC-44D5-A7D1-B3322C3F0CB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ocelot.Api", "ApiGateways\Ocelot.Api\Ocelot.Api.csproj", "{EBF3F80D-D5FC-44D5-A7D1-B3322C3F0CB1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECcommerceHub.Identity", "Infrastructure\ECcommerceHub.Identity\ECcommerceHub.Identity.csproj", "{F446339C-6921-4FBE-BE9F-FFDADB497631}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -143,6 +145,10 @@ Global
 		{EBF3F80D-D5FC-44D5-A7D1-B3322C3F0CB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBF3F80D-D5FC-44D5-A7D1-B3322C3F0CB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBF3F80D-D5FC-44D5-A7D1-B3322C3F0CB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F446339C-6921-4FBE-BE9F-FFDADB497631}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F446339C-6921-4FBE-BE9F-FFDADB497631}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F446339C-6921-4FBE-BE9F-FFDADB497631}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F446339C-6921-4FBE-BE9F-FFDADB497631}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -171,6 +177,7 @@ Global
 		{5FAAAF41-98C3-4826-8298-D80BFB6A9476} = {C097537B-2A56-4766-A2AE-212381F5C356}
 		{E507F77E-0351-41B5-B3EC-C7B49292F975} = {45E537C9-D0FC-402E-A5E2-0FA69FB305FC}
 		{EBF3F80D-D5FC-44D5-A7D1-B3322C3F0CB1} = {D8293F1C-3BC2-4CC9-A3D6-0CA3A4680B73}
+		{F446339C-6921-4FBE-BE9F-FFDADB497631} = {45E537C9-D0FC-402E-A5E2-0FA69FB305FC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E1C46E5E-3305-432A-9B94-89781A74D55E}
