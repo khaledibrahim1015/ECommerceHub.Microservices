@@ -45,7 +45,7 @@ namespace ECcommerceHub.Identity
         public static IEnumerable<Client> Clients =>
             new Client[]
             {
-                // Catalog.Api
+            // Catalog.Api
             // MACHINE TO MACHINE FLOW 
             new Client()
             {
@@ -65,7 +65,18 @@ namespace ECcommerceHub.Identity
                 ClientSecrets=new []{new Secret("fa4d1332-0d6b-4a8b-94cc-477a75c1041f".Sha256()) },
                 AllowedScopes= { "basketapi" }
 
-            }
+            },
+
+
+            // Or Combine one 
+              new Client()
+            {
+                ClientName ="Catalog Api Client ",
+                ClientId= "CatalogApiClientBasketApiClient",
+                ClientSecrets={new Secret("7f053372-2504-496f-a7b7-b04c3972bd92".Sha256()) },
+                AllowedGrantTypes= GrantTypes.ClientCredentials,
+                AllowedScopes={ "catalogapi", "basketapi" }
+            },
 
 
             };
