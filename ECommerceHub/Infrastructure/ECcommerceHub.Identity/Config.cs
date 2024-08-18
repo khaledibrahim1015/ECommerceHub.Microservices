@@ -21,6 +21,8 @@ namespace ECcommerceHub.Identity
             new ApiScope[]
             {
                 new ApiScope("catalogapi"),
+                new ApiScope("catalogapi.read"),
+                new ApiScope("catalogapi.write"),
                 new ApiScope("basketapi")
 
             };
@@ -29,10 +31,12 @@ namespace ECcommerceHub.Identity
             new ApiResource[]
             {
                 // Catalog.Api
-                // audience 
+                // audience  in Authenticaion 
                 new ApiResource(name:"Catalog", displayName: "Catalog.API")
                 {
-                    Scopes= new []{ "catalogapi" }
+                    //  scope in policy authoritization 
+                    //Scopes= new []{ "catalogapi" }
+                    Scopes={ "catalogapi.read", "catalogapi.write"}
                 },
                 // Basket.Api
                 new ApiResource(name: "Basket", displayName: "Basket.Api")
@@ -53,7 +57,8 @@ namespace ECcommerceHub.Identity
                 ClientId= "CatalogApiClient",
                 ClientSecrets={new Secret("7f053372-2504-496f-a7b7-b04c3972bd92".Sha256()) },
                 AllowedGrantTypes= GrantTypes.ClientCredentials,
-                AllowedScopes={ "catalogapi" }
+                //AllowedScopes={ "catalogapi" }
+                AllowedScopes={ "catalogapi.read", "catalogapi.write" }
             },
             // Basket.Api
             // machine to machine flow 

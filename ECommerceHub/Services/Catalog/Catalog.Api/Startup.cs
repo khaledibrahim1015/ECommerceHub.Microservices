@@ -49,6 +49,16 @@ namespace Catalog.Api
                         options.Authority = "https://localhost:9009";
                         options.Audience = "Catalog";
                     });
+            //  add authorization level 
+            // validate token search on scope prop with exist value 
+            // [Authorize(Policy ="CanRead")]
+            services.AddAuthorization(option =>
+            {
+                option.AddPolicy("CanRead", configurePolicy =>
+                {
+                    configurePolicy.RequireClaim("scope", "catalogapi.read");
+                });
+            });
 
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
