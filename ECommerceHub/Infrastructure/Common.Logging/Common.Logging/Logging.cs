@@ -28,6 +28,8 @@ public static class Logging
 
 
             loggerConfiguration
+                              .Enrich.WithProperty("ApplicationName", env.ApplicationName)
+                              .Enrich.WithProperty("EnvironmentName", env.EnvironmentName)
                               .Enrich.FromLogContext()
                               .Enrich.WithExceptionDetails()
                               .Enrich.WithProcessName()
