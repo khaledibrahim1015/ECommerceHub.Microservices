@@ -1,9 +1,8 @@
-﻿namespace Ocelot.Api;
+﻿using Serilog;
+namespace Ocelot.Api;
 
 public class Program
 {
-
-
     public static void Main(string[] args)
     {
         CreateHostBuilder(args).Build().Run();
@@ -19,7 +18,7 @@ public class Program
         .ConfigureWebHostDefaults(webhostbuilder =>
         {
             webhostbuilder.UseStartup<Startup>();
-        });
+        }).UseSerilog(Common.Logging.Logging.ConfigureLogging);
 
 
 }

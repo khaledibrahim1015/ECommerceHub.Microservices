@@ -1,4 +1,5 @@
-﻿using Discount.Application.Interfaces;
+﻿using Common.Logging.Correlation;
+using Discount.Application.Interfaces;
 using Discount.Application.Queries;
 using Discount.Core.Entities;
 using Discount.Core.Repositories;
@@ -11,7 +12,7 @@ namespace Discount.Api.Extensions
     public static class ServiceCollectionExtensions
     {
 
-        public static IServiceCollection AddRequiredServices(this IServiceCollection services , IConfiguration configuration)
+        public static IServiceCollection AddRequiredServices(this IServiceCollection services, IConfiguration configuration)
         {
             // configure Postgresql configuration 
             services.Configure<PostgresqlConfiguration>(configuration.GetSection("DatabaseSettings"));
@@ -30,7 +31,7 @@ namespace Discount.Api.Extensions
 
 
             services.AddScoped<IDiscountRepository, DiscountRepostiory>();
-
+            services.AddScoped<ICorrelationIdGenerator, CorrelationIdGenerator>();
 
             // api registers 
             services.AddMappers();

@@ -1,4 +1,5 @@
-﻿using EventBus.Messages.Common;
+﻿using Common.Logging.Correlation;
+using EventBus.Messages.Common;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -50,6 +51,7 @@ namespace Ordering.Api.Extensions
             //  For Consumer Event 
             // Configure RabbitMQ for Consuming Messages
             services.AddScoped<BasketOrderingConsumer>();
+            services.AddScoped<ICorrelationIdGenerator, CorrelationIdGenerator>();
             //services.AddMassTransit(config =>
             //{
             //    config.SetKebabCaseEndpointNameFormatter();

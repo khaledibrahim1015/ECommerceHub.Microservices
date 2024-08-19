@@ -2,17 +2,18 @@
 using Catalog.Core.Repositories;
 using Catalog.Infrastructure.Data;
 using Catalog.Infrastructure.Repositories;
+using Common.Logging.Correlation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using Microsoft.AspNetCore.Mvc.Versioning;
 
 namespace Catalog.Api.Factory
 {
     public static class ServiceCollectionExtension
     {
-        public static IServiceCollection AddRequiredServices(this IServiceCollection services , IConfiguration configuration)
+        public static IServiceCollection AddRequiredServices(this IServiceCollection services, IConfiguration configuration)
         {
 
 
@@ -53,7 +54,7 @@ namespace Catalog.Api.Factory
 
             });
 
-     
+
 
             //adding health check services to container
             //adding MongoDb Health Check
@@ -75,14 +76,14 @@ namespace Catalog.Api.Factory
             });
 
             // Register Automapper 
-            
+
             services.AddAutoMapper(typeof(CreateProductHandler).GetTypeInfo().Assembly);
 
             services.AddScoped<ICatalogContext>(sp => new CatalogContext(sp.GetRequiredService<IConfiguration>()));
             services.AddScoped<IProductRepostitory, ProductRepository>();
             services.AddScoped<IBrandRepository, ProductRepository>();
             services.AddScoped<ITypeRepository, ProductRepository>();
-
+            services.AddScoped<ICorrelationIdGenerator, CorrelationIdGenerator>();
 
             return services;
         }

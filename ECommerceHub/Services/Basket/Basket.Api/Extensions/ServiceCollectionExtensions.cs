@@ -4,6 +4,7 @@ using Basket.Core.interfaces;
 using Basket.Infrastructure.Configuration;
 using Basket.Infrastructure.Repositories;
 using Basket.Infrastructure.Services;
+using Common.Logging.Correlation;
 using Discount.Grpc.Protos;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
@@ -69,6 +70,7 @@ namespace Basket.Api.Extensions
             // Register Services 
             services.AddScoped<ICacheService, CacheService>();
             services.AddScoped<IBasketRepository, BasketRepository>();
+            services.AddScoped<ICorrelationIdGenerator, CorrelationIdGenerator>();
             services.AddScoped<DiscountGrpcService>();
             services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(configClinet =>
             {
