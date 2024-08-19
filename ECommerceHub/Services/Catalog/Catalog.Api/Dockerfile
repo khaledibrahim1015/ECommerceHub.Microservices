@@ -14,6 +14,7 @@ COPY ["Services/Catalog/Catalog.Api/Catalog.Api.csproj","Services/Catalog/Catalo
 COPY ["Services/Catalog/Catalog.Application/Catalog.Application.csproj","Services/Catalog/Catalog.Application/Catalog.Application.csproj"] 
 COPY ["Services/Catalog/Catalog.Infrastructure/Catalog.Infrastructure.csproj","Services/Catalog/Catalog.Infrastructure/Catalog.Infrastructure.csproj"] 
 COPY ["Services/Catalog/Catalog.Core/Catalog.Core.csproj","Services/Catalog/Catalog.Core/Catalog.Core.csproj"] 
+COPY ["Infrastructure/Common.Logging/Common.Logging.csproj", "Infrastructure/Common.Logging/"]
 
 # to restore dependencies and Packages from catalog.api.csproj => that includde refernces from catalog.infrastructure.csproj and catalog.application.csproj 
 # Restore dependencies and packages
