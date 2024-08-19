@@ -1,5 +1,7 @@
+using Common.Logging;
 using Ordering.Api.Extensions;
 using Ordering.Infrastructure.Data;
+using Serilog;
 
 namespace Ordering.Api
 {
@@ -26,12 +28,13 @@ namespace Ordering.Api
           {
               configurationBuiler.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
               configurationBuiler.AddJsonFile($"appsettings.{hostBuilderContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true);
-          }).ConfigureLogging((hostingContext, logging) =>
-          {
-              logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-              logging.AddConsole();
-              logging.AddDebug();
-          });
+          }).UseSerilog(Logging.ConfigureLogging);
+        //  .ConfigureLogging((hostingContext, logging) =>
+        //{
+        //    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+        //    logging.AddConsole();
+        //    logging.AddDebug();
+        //})
 
 
         private static async Task ExecuteDatabaseSeedAsync(OrderDbContext context, IServiceProvider service)

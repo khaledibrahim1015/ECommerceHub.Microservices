@@ -1,6 +1,7 @@
 
 using Catalog.Infrastructure.Data;
-using Microsoft.Extensions.DependencyInjection;
+using Common.Logging;
+using Serilog;
 
 namespace Catalog.Api
 {
@@ -8,28 +9,28 @@ namespace Catalog.Api
     {
         public async static Task Main(string[] args)
         {
-           var host =  CreateHostBuilder(args).Build();//.Run();
+            var host = CreateHostBuilder(args).Build();//.Run();
 
-            using IServiceScope? scope =  host.Services.CreateScope();
-            IServiceProvider services  =  scope.ServiceProvider;
-            IHostEnvironment env  =  services.GetRequiredService<IHostEnvironment>();
+            using IServiceScope? scope = host.Services.CreateScope();
+            IServiceProvider services = scope.ServiceProvider;
+            IHostEnvironment env = services.GetRequiredService<IHostEnvironment>();
             ILogger<Program> logger = services.GetRequiredService<ILogger<Program>>();
 
             try
             {
-                if(env.IsDevelopment() || env.IsStaging())
+                if (env.IsDevelopment() || env.IsStaging())
                 {
                     ICatalogContext context = services.GetRequiredService<ICatalogContext>();
                     logger.LogInformation("Finished seeding the database.");
                 }
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
                 logger.LogError(ex, "An error occurred while seeding the database.");
                 throw;
             }
 
-          await  host.RunAsync();
+            await host.RunAsync();
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -40,7 +41,7 @@ namespace Catalog.Api
             {
                 configBuilder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
                 configBuilder.AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true);
-            });
-        
+            }).UseSerilog(Logging.ConfigureLogging);
+
     }
 }
