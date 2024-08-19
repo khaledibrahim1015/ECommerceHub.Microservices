@@ -53,6 +53,13 @@ services:
     build:
       context: .
       dockerfile: ApiGateways/Ocelot.Api/Dockerfile
+
+  identityserver:
+    image: ${DOCKER_REGISTRY-}identityserver
+    build:
+      context: .
+      dockerfile: Infrastructure/ECcommerceHub.Identity/Dockerfile
+  
     
 
 
