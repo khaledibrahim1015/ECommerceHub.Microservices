@@ -50,3 +50,4 @@
 /ECommerceHub/ApiGateways/Ocelot.Api/obj
 /ECommerceHub/Infrastructure/ECcommerceHub.Identity/obj
 /ECommerceHub/Infrastructure/ECcommerceHub.Identity
+/ECommerceHub/Infrastructure/Common.Logging/Common.Logging/obj

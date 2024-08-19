@@ -73,6 +73,12 @@ services:
   rabbitmq:
     image: rabbitmq:3-management-alpine
 
+  elasticsearch:
+    image: elasticsearch:7.9.2
+    
+  kibana:
+    image: kibana:7.9.2
+
 
 volumes:
   mongo_data:
@@ -81,6 +87,7 @@ volumes:
   postgres_data:
   pgadmin_data:
   rabbitmq_data:
+  elasticsearch-data:  
 
 
 

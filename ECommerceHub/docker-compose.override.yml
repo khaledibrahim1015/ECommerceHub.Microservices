@@ -43,8 +43,11 @@ services:
       - "DatabaseSettings__ProductCollection=Products"
       - "DatabaseSettings__BrandsCollection=Brands"
       - "DatabaseSettings__TypesCollection=Types"
+      - "ElasticConfiguration__Uri:http://elasticsearch:9200"
+      - ElasticUrl:http://elasticsearch:9200
     depends_on:
       - catalogdb
+      - elasticsearch
     ports:
       - "9000:80"
 
@@ -59,10 +62,13 @@ services:
       - "EventBusSettings__Password:KHALEDPASS"
       - "Redis__ConnectionString=basketdb:6379"
       - "GrpcSettings__DiscountUrl:http://discount.api"
+      - "ElasticConfiguration__Uri:http://elasticsearch:9200"
+      - ElasticUrl:http://elasticsearch:9200
       - "ASPNETCORE_URLS=http://+:80"
     depends_on:
       - basketdb
       - rabbitmq
+      - elasticsearch
     ports:
       - "9001:80"
 
@@ -72,8 +78,11 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "DatabaseSettings__ConnectionString=Host=discountdb;Port=5432;Database=DiscountDb;Username=postgres;Password=postgres;"
+      - "ElasticConfiguration__Uri:http://elasticsearch:9200"
+      - ElasticUrl:http://elasticsearch:9200
     depends_on:
       - discountdb
+      - elasticsearch
     ports:
       - "9002:80"
   
@@ -87,9 +96,12 @@ services:
       - "EventBusSettings__HostAddress:amqp://KHALED:KHALEDPASS@rabbitmq:5672"
       - "EventBusSettings__UserName:KHALED"
       - "EventBusSettings__Password:KHALEDPASS"
+      - "ElasticConfiguration__Uri:http://elasticsearch:9200"
+      - ElasticUrl:http://elasticsearch:9200
     depends_on:
       - orderdb
       - rabbitmq
+      - elasticsearch
     ports:
       - "9003:80"
 
@@ -98,6 +110,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
+     - identityserver
      - catalog.api
      - basket.api
      - discount.api
@@ -146,6 +159,28 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
+  elasticsearch:
+    container_name: elasticsearch
+    environment:
+      - xpack.monitoring.enabled=true
+      - xpack.watcher.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+
+
+  kibana:
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+
  
 
 volumes:
@@ -155,3 +190,4 @@ volumes:
   postgres_data:
   pgadmin_data:
   rabbitmq_data:
+  elasticsearch-data:  

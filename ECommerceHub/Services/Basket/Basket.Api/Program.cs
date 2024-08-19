@@ -6,7 +6,7 @@ namespace Basket.Api
         public async static Task Main(string[] args)
         {
             IHost host = CreateHostBuilder(args).Build();
-           await host.RunAsync();
+            await host.RunAsync();
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args)
